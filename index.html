@@ -51,6 +51,8 @@
   .b-danger{display:inline-block;background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border);border-radius:4px;padding:1px 6px;font-weight:600;font-size:11px;font-family:var(--mono)}
   .note{background:#fffbeb;border-left:3px solid #f59e0b;padding:10px 14px;border-radius:0 6px 6px 0;font-size:12px;color:#78350f;margin-bottom:20px;line-height:1.6}
   @media print{body{background:#fff}.page{padding:12px;max-width:100%}.tab-bar{display:none}.panel{display:block!important}}
+  .delta-good{font-size:10px;font-weight:600;color:#15803d;margin-left:4px}
+  .delta-bad{font-size:10px;font-weight:600;color:#dc2626;margin-left:4px}
 </style>
 </head>
 <body>
@@ -61,10 +63,10 @@
     <div class="header-meta">Data as of 8/25/2026 12:35 PM</div>
   </header>
   <div class="kpi-row">
-    <div class="kpi"><div class="kpi-label">Above the Line</div><div class="kpi-value kv-blue">113</div><div class="kpi-sub">66% of 171 epics committed</div></div>
-    <div class="kpi"><div class="kpi-label">Below the Line</div><div class="kpi-value kv-btl">58</div><div class="kpi-sub">34% of 171 epics deferred</div></div>
-    <div class="kpi"><div class="kpi-label">Story Points &mdash; Above Line</div><div class="kpi-value kv-blue">1,930</div><div class="kpi-sub">ATL committed SP</div></div>
-    <div class="kpi"><div class="kpi-label">Story Points &mdash; Below Line</div><div class="kpi-value kv-btl">948</div><div class="kpi-sub">BTL deferred SP</div></div>
+    <div class="kpi"><div class="kpi-label">Above the Line</div><div class="kpi-value kv-blue">113</div><div class="kpi-sub">66% of 171 epics</div></div>
+    <div class="kpi"><div class="kpi-label">Below the Line</div><div class="kpi-value kv-btl">58</div><div class="kpi-sub">34% of 171 epics</div></div>
+    <div class="kpi"><div class="kpi-label">Story Points &mdash; Above Line</div><div class="kpi-value kv-blue">1,930</div><div class="kpi-sub">ATL story points</div></div>
+    <div class="kpi"><div class="kpi-label">Story Points &mdash; Below Line</div><div class="kpi-value kv-btl">948</div><div class="kpi-sub">BTL story points</div></div>
   </div>
   <div class="tab-bar">
     <button class="tab active" onclick="switchTab('epic',this)">Epic Fields <span class="count">171 epics</span></button>
