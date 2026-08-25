@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q4 2026 HRP/PDM Planning — Readiness Dashboard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#f0f2f5;--surface:#fff;--border:#e2e5ea;--border-strong:#c9cdd6;--text-primary:#0f1623;--text-secondary:#5a6272;--text-muted:#959dac;--blue:#1a56db;--blue-light:#eff4ff;--blue-border:#bfcff8;--green:#0e7c4a;--green-bg:#dcfce7;--green-border:#86efac;--yellow-text:#854d0e;--yellow-bg:#fef9c3;--yellow-border:#fef08a;--amber-text:#92400e;--amber-bg:#fef3c7;--amber-border:#fde68a;--red-text:#991b1b;--red-bg:#fee2e2;--red-border:#fca5a5;--btl:#6b7280;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
+  body{font-family:var(--sans);background:var(--bg);color:var(--text-primary);font-size:13px;line-height:1.5}
+  .page{max-width:1280px;margin:0 auto;padding:32px 24px 80px}
+  header{margin-bottom:24px}
+  .header-eyebrow{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px}
+  header h1{font-size:22px;font-weight:700;color:var(--text-primary);letter-spacing:-.4px;margin-bottom:4px}
+  .header-meta{font-size:11px;color:var(--text-muted)}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+  .kpi-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:6px}
+  .kpi-value{font-family:var(--mono);font-size:26px;font-weight:600;line-height:1;margin-bottom:4px}
+  .kpi-sub{font-size:11px;color:var(--text-muted)}
+  .kv-blue{color:var(--blue)}.kv-btl{color:var(--btl)}
+  .tab-bar{display:flex;gap:1px;border-bottom:2px solid var(--border);margin-bottom:20px}
+  .tab{padding:10px 20px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--text-secondary);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .1s;white-space:nowrap}
+  .tab:hover{color:var(--text-primary)}.tab.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+  .tab .count{font-size:11px;opacity:.6;margin-left:4px}
+  .panel{display:none}.panel.active{display:block}
+  .legend{display:flex;gap:18px;margin-bottom:12px;font-size:11px;color:var(--text-secondary);flex-wrap:wrap;align-items:center}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;overflow-x:auto;box-shadow:0 1px 4px rgba(0,0,0,.04);margin-bottom:28px}
+  table{width:100%;border-collapse:collapse}
+  thead{background:#f8f9fb}
+  thead tr:first-child th{padding:10px 12px 4px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);border-bottom:none}
+  thead tr.subhead th{padding:2px 12px 8px;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);border-bottom:1px solid var(--border)}
+  thead th{padding:10px 12px 8px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);border-bottom:1px solid var(--border)}
+  thead th.num{text-align:left}
+  thead th.group-label{text-align:center;border-left:1px solid var(--border);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+  .group-divider{border-left:1px solid var(--border-strong)!important}
+  tbody tr{border-bottom:1px solid #f3f4f6}tbody tr:last-child{border-bottom:none}tbody tr:hover{background:#fafbfc}
+  td{padding:8px 12px}
+  td.name{font-weight:500;color:var(--text-primary);white-space:nowrap}
+  td.num{text-align:left;font-family:var(--mono);font-size:12px;color:var(--text-secondary);min-width:64px;white-space:nowrap}
+  td.atl-val{color:var(--blue);font-weight:600}td.btl-val{color:var(--btl)}
+  tfoot tr{background:var(--blue-light);border-top:2px solid var(--blue-border)}
+  tfoot td{padding:9px 12px;font-weight:700;font-family:var(--mono);font-size:12px;color:var(--blue)}
+  tfoot td.name-cell{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--blue)}
+  tfoot td.num{text-align:left}tfoot td.btl-val{color:#4b5563}
+  .b-ok{display:inline-block;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);border-radius:4px;padding:1px 6px;font-weight:600;font-size:11px;font-family:var(--mono)}
+  .b-mid{display:inline-block;background:var(--yellow-bg);color:var(--yellow-text);border:1px solid var(--yellow-border);border-radius:4px;padding:1px 6px;font-weight:600;font-size:11px;font-family:var(--mono)}
+  .b-warn{display:inline-block;background:var(--amber-bg);color:var(--amber-text);border:1px solid var(--amber-border);border-radius:4px;padding:1px 6px;font-weight:600;font-size:11px;font-family:var(--mono)}
+  .b-danger{display:inline-block;background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border);border-radius:4px;padding:1px 6px;font-weight:600;font-size:11px;font-family:var(--mono)}
+  .note{background:#fffbeb;border-left:3px solid #f59e0b;padding:10px 14px;border-radius:0 6px 6px 0;font-size:12px;color:#78350f;margin-bottom:20px;line-height:1.6}
+  @media print{body{background:#fff}.page{padding:12px;max-width:100%}.tab-bar{display:none}.panel{display:block!important}}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="header-eyebrow">HealthEdge &middot; PI 26.4 Planning</div>
+    <h1>Q4 2026 HRP/PDM Planning &mdash; Readiness Dashboard</h1>
+    <div class="header-meta">Data as of 8/24/2026 11:22 AM</div>
+  </header>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-label">Above the Line</div><div class="kpi-value kv-blue">100</div><div class="kpi-sub">61% of 164 epics committed</div></div>
+    <div class="kpi"><div class="kpi-label">Below the Line</div><div class="kpi-value kv-btl">64</div><div class="kpi-sub">39% of 164 epics deferred</div></div>
+    <div class="kpi"><div class="kpi-label">Story Points &mdash; Above Line</div><div class="kpi-value kv-blue">1,799</div><div class="kpi-sub">ATL committed SP</div></div>
+    <div class="kpi"><div class="kpi-label">Story Points &mdash; Below Line</div><div class="kpi-value kv-btl">975</div><div class="kpi-sub">BTL deferred SP</div></div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('epic',this)">Epic Fields <span class="count">164 epics</span></button>
+    <button class="tab" onclick="switchTab('hinit',this)">Enterprise Readiness <span class="count">94 HINITs</span></button>
+    <button class="tab" onclick="switchTab('teams',this)">Scrum Teams</button>
+  </div>
+  <div class="panel active" id="panel-epic">
+    <div class="legend">
+      <span><span class="b-ok">0</span> None missing</span><span><span class="b-mid">2</span> &lt;30% missing</span>
+      <span><span class="b-warn">8</span> 30&ndash;69% missing</span><span><span class="b-danger">14</span> &ge;70% missing</span>
+    </div>
+    <div class="table-wrap"><table>
+      <thead>
+        <tr>
+          <th rowspan="2" style="vertical-align:bottom;padding-bottom:8px">Value Stream</th>
+          <th rowspan="2" class="num" style="vertical-align:bottom;padding-bottom:8px">Epics</th>
+          <th rowspan="2" class="num" style="vertical-align:bottom;padding-bottom:8px;border-left:1px solid var(--border)">ATL</th>
+          <th rowspan="2" class="num" style="vertical-align:bottom;padding-bottom:8px">BTL</th>
+          <th colspan="10" class="group-label" style="border-left:1px solid var(--border)">Missing Fields</th>
+        </tr>
+        <tr class="subhead">
+          <th class="num group-divider">No Parent HINIT</th><th class="num">No Story Pts</th><th class="num">No Cust. Value</th>
+          <th class="num">No Cust. Commit.</th><th class="num">No Customer</th><th class="num">No P.I. (26.4)</th>
+          <th class="num">No KTLO</th><th class="num">No Reg. Flag</th><th class="num">No VS Priority</th><th class="num">No Fix Version (Jira)</th>
+        </tr>
+      </thead>
+      <tbody><tr><td class="name">Billing & Financials</td><td class="num">9</td><td class="num atl-val" style="border-left:1px solid var(--border)">8</td><td class="num btl-val">1</td>
+<td class="num group-divider"><span class="b-warn">3</span></td>
+<td class="num"><span class="b-danger">9</span></td>
+<td class="num"><span class="b-danger">9</span></td>
+<td class="num"><span class="b-danger">9</span></td>
+<td class="num"><span class="b-warn">6</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-warn">4</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-danger">9</span></td></tr>
+<tr><td class="name">Enrollment</td><td class="num">9</td><td class="num atl-val" style="border-left:1px solid var(--border)">9</td><td class="num btl-val">0</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-mid">2</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-warn">5</span></td></tr>
+<tr><td class="name">Claims & Configuration</td><td class="num">28</td><td class="num atl-val" style="border-left:1px solid var(--border)">11</td><td class="num btl-val">17</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-mid">2</span></td>
+<td class="num"><span class="b-warn">10</span></td>
+<td class="num"><span class="b-warn">15</span></td>
+<td class="num"><span class="b-mid">5</span></td>
+<td class="num"><span class="b-mid">7</span></td>
+<td class="num"><span class="b-warn">18</span></td>
+<td class="num"><span class="b-warn">11</span></td>
+<td class="num"><span class="b-warn">10</span></td>
+<td class="num"><span class="b-warn">19</span></td></tr>
+<tr><td class="name">BlueCard / 27X</td><td class="num">18</td><td class="num atl-val" style="border-left:1px solid var(--border)">13</td><td class="num btl-val">5</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-warn">7</span></td>
+<td class="num"><span class="b-mid">2</span></td>
+<td class="num"><span class="b-mid">2</span></td>
+<td class="num"><span class="b-mid">5</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-mid">2</span></td>
+<td class="num"><span class="b-mid">1</span></td>
+<td class="num"><span class="b-mid">2</span></td></tr>
+<tr><td class="name">Implementation Accelerators</td><td class="num">17</td><td class="num atl-val" style="border-left:1px solid var(--border)">7</td><td class="num btl-val">10</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-mid">4</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-mid">1</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-danger">13</span></td></tr>
+<tr><td class="name">Integrations</td><td class="num">22</td><td class="num atl-val" style="border-left:1px solid var(--border)">16</td><td class="num btl-val">6</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-mid">3</span></td>
+<td class="num"><span class="b-warn">10</span></td>
+<td class="num"><span class="b-warn">9</span></td>
+<td class="num"><span class="b-mid">1</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-danger">16</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-warn">9</span></td></tr>
+<tr><td class="name">Platform / Core Modules</td><td class="num">20</td><td class="num atl-val" style="border-left:1px solid var(--border)">11</td><td class="num btl-val">9</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-warn">7</span></td>
+<td class="num"><span class="b-warn">12</span></td>
+<td class="num"><span class="b-warn">8</span></td>
+<td class="num"><span class="b-danger">14</span></td>
+<td class="num"><span class="b-mid">3</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-warn">7</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-warn">11</span></td></tr>
+<tr><td class="name">Performance & Scale</td><td class="num">8</td><td class="num atl-val" style="border-left:1px solid var(--border)">6</td><td class="num btl-val">2</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-warn">5</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-warn">3</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-danger">7</span></td></tr>
+<tr><td class="name">PDM</td><td class="num">32</td><td class="num atl-val" style="border-left:1px solid var(--border)">19</td><td class="num btl-val">13</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-warn">17</span></td>
+<td class="num"><span class="b-danger">32</span></td>
+<td class="num"><span class="b-danger">32</span></td>
+<td class="num"><span class="b-mid">1</span></td>
+<td class="num"><span class="b-danger">32</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-danger">30</span></td>
+<td class="num"><span class="b-danger">32</span></td>
+<td class="num"><span class="b-ok">0</span></td></tr>
+<tr><td class="name">MMO ASO Billing</td><td class="num">1</td><td class="num atl-val" style="border-left:1px solid var(--border)">0</td><td class="num btl-val">1</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-danger">1</span></td>
+<td class="num"><span class="b-danger">1</span></td>
+<td class="num"><span class="b-danger">1</span></td>
+<td class="num"><span class="b-danger">1</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-danger">1</span></td>
+<td class="num"><span class="b-danger">1</span></td>
+<td class="num"><span class="b-danger">1</span></td></tr>
+</tbody>
+      <tfoot><tr><td class="name-cell">TOTAL</td><td class="num">164</td><td class="num atl-val" style="border-left:1px solid var(--border)">100</td><td class="num btl-val">64</td>
+<td class="num group-divider">3</td><td class="num">47</td><td class="num">74</td><td class="num">77</td>
+<td class="num">44</td><td class="num">46</td><td class="num">18</td><td class="num">71</td>
+<td class="num">44</td><td class="num">76</td></tr></tfoot>
+    </table></div>
+  </div>
+  <div class="panel" id="panel-hinit">
+    <div class="legend">
+      <span><span class="b-ok">0</span> None missing</span><span><span class="b-mid">2</span> &lt;30% missing</span>
+      <span><span class="b-warn">8</span> 30&ndash;69% missing</span><span><span class="b-danger">14</span> &ge;70% missing</span>
+      <span style="margin-left:4px;color:var(--text-muted)">&middot; Customer in yellow &mdash; not always required &nbsp;&middot;&nbsp; No P.I. (26.4) = HINIT's own P.I. field doesn't include 26.4</span>
+    </div>
+    <div class="table-wrap"><table>
+      <thead>
+        <tr>
+          <th rowspan="2" style="vertical-align:bottom;padding-bottom:8px">Value Stream</th>
+          <th rowspan="2" class="num" style="vertical-align:bottom;padding-bottom:8px">HINITs</th>
+          <th rowspan="2" class="num" style="vertical-align:bottom;padding-bottom:8px;border-left:1px solid var(--border)">ATL</th>
+          <th rowspan="2" class="num" style="vertical-align:bottom;padding-bottom:8px">BTL</th>
+          <th colspan="9" class="group-label" style="border-left:1px solid var(--border)">Missing Fields</th>
+        </tr>
+        <tr class="subhead">
+          <th class="num group-divider">No Init. Tier</th><th class="num">No P.I. (26.4)</th><th class="num">No EOQ4 Plan</th>
+          <th class="num">No Tech. Owner</th><th class="num">No Prod. Owner</th><th class="num">No Customer</th>
+          <th class="num">No Owning Team</th><th class="num">No Value Stream</th><th class="num">No Due Date</th>
+        </tr>
+      </thead>
+      <tbody><tr><td class="name">Billing & Financials</td><td class="num">4</td><td class="num atl-val" style="border-left:1px solid var(--border)">4</td><td class="num btl-val">0</td>
+<td class="num group-divider"><span class="b-danger">3</span></td>
+<td class="num"><span class="b-mid">1</span></td>
+<td class="num"><span class="b-danger">3</span></td>
+<td class="num"><span class="b-danger">4</span></td>
+<td class="num"><span class="b-danger">4</span></td>
+<td class="num"><span class="b-warn">2</span></td>
+<td class="num"><span class="b-danger">4</span></td>
+<td class="num"><span class="b-mid">1</span></td>
+<td class="num"><span class="b-warn">2</span></td></tr>
+<tr><td class="name">Enrollment</td><td class="num">9</td><td class="num atl-val" style="border-left:1px solid var(--border)">9</td><td class="num btl-val">0</td>
+<td class="num group-divider"><span class="b-mid">2</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-danger">9</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-warn">6</span></td></tr>
+<tr><td class="name">Claims & Configuration</td><td class="num">25</td><td class="num atl-val" style="border-left:1px solid var(--border)">8</td><td class="num btl-val">17</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-mid">5</span></td>
+<td class="num"><span class="b-danger">25</span></td>
+<td class="num"><span class="b-mid">5</span></td>
+<td class="num"><span class="b-mid">7</span></td>
+<td class="num"><span class="b-warn">14</span></td>
+<td class="num"><span class="b-mid">4</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-mid">7</span></td></tr>
+<tr><td class="name">BlueCard / 27X</td><td class="num">6</td><td class="num atl-val" style="border-left:1px solid var(--border)">5</td><td class="num btl-val">1</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-danger">6</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-mid">1</span></td></tr>
+<tr><td class="name">Implementation Accelerators</td><td class="num">9</td><td class="num atl-val" style="border-left:1px solid var(--border)">5</td><td class="num btl-val">4</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-warn">3</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-warn">4</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td></tr>
+<tr><td class="name">Integrations</td><td class="num">8</td><td class="num atl-val" style="border-left:1px solid var(--border)">6</td><td class="num btl-val">2</td>
+<td class="num group-divider"><span class="b-mid">2</span></td>
+<td class="num"><span class="b-mid">1</span></td>
+<td class="num"><span class="b-danger">8</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td></tr>
+<tr><td class="name">Platform / Core Modules</td><td class="num">17</td><td class="num atl-val" style="border-left:1px solid var(--border)">9</td><td class="num btl-val">8</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-mid">4</span></td>
+<td class="num"><span class="b-warn">11</span></td>
+<td class="num"><span class="b-mid">3</span></td>
+<td class="num"><span class="b-mid">1</span></td>
+<td class="num"><span class="b-warn">11</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-mid">2</span></td></tr>
+<tr><td class="name">Performance & Scale</td><td class="num">2</td><td class="num atl-val" style="border-left:1px solid var(--border)">2</td><td class="num btl-val">0</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-danger">2</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td></tr>
+<tr><td class="name">PDM</td><td class="num">13</td><td class="num atl-val" style="border-left:1px solid var(--border)">8</td><td class="num btl-val">5</td>
+<td class="num group-divider"><span class="b-mid">2</span></td>
+<td class="num"><span class="b-danger">11</span></td>
+<td class="num"><span class="b-danger">13</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-warn">7</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-danger">13</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-mid">3</span></td></tr>
+<tr><td class="name">MMO ASO Billing</td><td class="num">1</td><td class="num atl-val" style="border-left:1px solid var(--border)">0</td><td class="num btl-val">1</td>
+<td class="num group-divider"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td></tr>
+</tbody>
+      <tfoot><tr><td class="name-cell">TOTAL</td><td class="num">94</td><td class="num atl-val" style="border-left:1px solid var(--border)">56</td><td class="num btl-val">38</td>
+<td class="num group-divider">9</td><td class="num">22</td><td class="num">75</td><td class="num">15</td>
+<td class="num">19</td><td class="num">33</td><td class="num">21</td><td class="num">1</td>
+<td class="num">21</td></tr></tfoot>
+    </table></div>
+  </div>
+  <div class="panel" id="panel-teams">
+    <div class="legend">
+      <span><span class="b-ok">0</span> None missing</span><span><span class="b-mid">2</span> &lt;30% missing</span>
+      <span><span class="b-warn">8</span> 30&ndash;69% missing</span><span><span class="b-danger">14</span> &ge;70% missing</span>
+    </div>
+    <div class="table-wrap"><table>
+      <thead>
+        <tr>
+          <th rowspan="2" style="vertical-align:bottom;padding-bottom:8px">Scrum Team</th>
+          <th rowspan="2" style="vertical-align:bottom;padding-bottom:8px">Value Stream</th>
+          <th rowspan="2" class="num" style="vertical-align:bottom;padding-bottom:8px">Epics</th>
+          <th rowspan="2" class="num" style="vertical-align:bottom;padding-bottom:8px;border-left:1px solid var(--border)">ATL</th>
+          <th rowspan="2" class="num" style="vertical-align:bottom;padding-bottom:8px">BTL</th>
+          <th rowspan="2" class="num" style="vertical-align:bottom;padding-bottom:8px;border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center">Epics Missing SP</th>
+          <th colspan="2" class="group-label" style="border-left:1px solid var(--border)">Story Points</th>
+        </tr>
+        <tr class="subhead"><th class="num group-divider">ATL SP</th><th class="num">BTL SP</th></tr>
+      </thead>
+      <tbody><tr><td class="name">Not assigned</td><td class="name" style="color:var(--text-secondary)">Billing & Financials</td><td class="num">16</td><td class="num atl-val" style="border-left:1px solid var(--border)">10</td><td class="num btl-val">6</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-warn">11</span></td><td class="num" style="color:var(--blue);font-weight:600">&mdash;</td><td class="num" style="color:var(--btl)">58</td></tr>
+<tr><td class="name">Alpha</td><td class="name" style="color:var(--text-secondary)">BlueCard / 27X</td><td class="num">8</td><td class="num atl-val" style="border-left:1px solid var(--border)">5</td><td class="num btl-val">3</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-mid">1</span></td><td class="num" style="color:var(--blue);font-weight:600">60</td><td class="num" style="color:var(--btl)">30</td></tr>
+<tr><td class="name">Sunshine</td><td class="name" style="color:var(--text-secondary)">BlueCard / 27X</td><td class="num">8</td><td class="num atl-val" style="border-left:1px solid var(--border)">6</td><td class="num btl-val">2</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-warn">4</span></td><td class="num" style="color:var(--blue);font-weight:600">27</td><td class="num" style="color:var(--btl)">&mdash;</td></tr>
+<tr><td class="name">Claim To Fame</td><td class="name" style="color:var(--text-secondary)">Claims & Configuration</td><td class="num">5</td><td class="num atl-val" style="border-left:1px solid var(--border)">3</td><td class="num btl-val">2</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-ok">0</span></td><td class="num" style="color:var(--blue);font-weight:600">97</td><td class="num" style="color:var(--btl)">35</td></tr>
+<tr><td class="name">Game Changers</td><td class="name" style="color:var(--text-secondary)">Claims & Configuration</td><td class="num">10</td><td class="num atl-val" style="border-left:1px solid var(--border)">5</td><td class="num btl-val">5</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-mid">1</span></td><td class="num" style="color:var(--blue);font-weight:600">131</td><td class="num" style="color:var(--btl)">71</td></tr>
+<tr><td class="name">Santhals</td><td class="name" style="color:var(--text-secondary)">Claims & Configuration</td><td class="num">6</td><td class="num atl-val" style="border-left:1px solid var(--border)">2</td><td class="num btl-val">4</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-ok">0</span></td><td class="num" style="color:var(--blue);font-weight:600">82</td><td class="num" style="color:var(--btl)">37</td></tr>
+<tr><td class="name">Visharad</td><td class="name" style="color:var(--text-secondary)">Claims & Configuration</td><td class="num">3</td><td class="num atl-val" style="border-left:1px solid var(--border)">1</td><td class="num btl-val">2</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-warn">1</span></td><td class="num" style="color:var(--blue);font-weight:600">22</td><td class="num" style="color:var(--btl)">11</td></tr>
+<tr><td class="name">Hercules</td><td class="name" style="color:var(--text-secondary)">Enrollment</td><td class="num">4</td><td class="num atl-val" style="border-left:1px solid var(--border)">4</td><td class="num btl-val">0</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-ok">0</span></td><td class="num" style="color:var(--blue);font-weight:600">113</td><td class="num" style="color:var(--btl)">&mdash;</td></tr>
+<tr><td class="name">Nirvana</td><td class="name" style="color:var(--text-secondary)">Enrollment</td><td class="num">5</td><td class="num atl-val" style="border-left:1px solid var(--border)">5</td><td class="num btl-val">0</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-ok">0</span></td><td class="num" style="color:var(--blue);font-weight:600">102</td><td class="num" style="color:var(--btl)">&mdash;</td></tr>
+<tr><td class="name">Impetus</td><td class="name" style="color:var(--text-secondary)">Implementation Accelerators</td><td class="num">17</td><td class="num atl-val" style="border-left:1px solid var(--border)">7</td><td class="num btl-val">10</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-mid">4</span></td><td class="num" style="color:var(--blue);font-weight:600">122</td><td class="num" style="color:var(--btl)">110</td></tr>
+<tr><td class="name">Apache</td><td class="name" style="color:var(--text-secondary)">Integrations</td><td class="num">12</td><td class="num atl-val" style="border-left:1px solid var(--border)">9</td><td class="num btl-val">3</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-ok">0</span></td><td class="num" style="color:var(--blue);font-weight:600">129</td><td class="num" style="color:var(--btl)">80</td></tr>
+<tr><td class="name">Dorians</td><td class="name" style="color:var(--text-secondary)">Integrations</td><td class="num">10</td><td class="num atl-val" style="border-left:1px solid var(--border)">7</td><td class="num btl-val">3</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-ok">0</span></td><td class="num" style="color:var(--blue);font-weight:600">160</td><td class="num" style="color:var(--btl)">50</td></tr>
+<tr><td class="name">Zenith</td><td class="name" style="color:var(--text-secondary)">MMO ASO Billing</td><td class="num">1</td><td class="num atl-val" style="border-left:1px solid var(--border)">0</td><td class="num btl-val">1</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-danger">1</span></td><td class="num" style="color:var(--blue);font-weight:600">&mdash;</td><td class="num" style="color:var(--btl)">&mdash;</td></tr>
+<tr><td class="name">Architecture</td><td class="name" style="color:var(--text-secondary)">PDM</td><td class="num">4</td><td class="num atl-val" style="border-left:1px solid var(--border)">0</td><td class="num btl-val">4</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-mid">1</span></td><td class="num" style="color:var(--blue);font-weight:600">&mdash;</td><td class="num" style="color:var(--btl)">90</td></tr>
+<tr><td class="name">Core</td><td class="name" style="color:var(--text-secondary)">PDM</td><td class="num">13</td><td class="num atl-val" style="border-left:1px solid var(--border)">6</td><td class="num btl-val">7</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-warn">8</span></td><td class="num" style="color:var(--blue);font-weight:600">20</td><td class="num" style="color:var(--btl)">136</td></tr>
+<tr><td class="name">Healthfirst Implementation</td><td class="name" style="color:var(--text-secondary)">PDM</td><td class="num">6</td><td class="num atl-val" style="border-left:1px solid var(--border)">6</td><td class="num btl-val">0</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-warn">4</span></td><td class="num" style="color:var(--blue);font-weight:600">94</td><td class="num" style="color:var(--btl)">&mdash;</td></tr>
+<tr><td class="name">MMO Implementation</td><td class="name" style="color:var(--text-secondary)">PDM</td><td class="num">6</td><td class="num atl-val" style="border-left:1px solid var(--border)">5</td><td class="num btl-val">1</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-warn">2</span></td><td class="num" style="color:var(--blue);font-weight:600">110</td><td class="num" style="color:var(--btl)">100</td></tr>
+<tr><td class="name">Quasar</td><td class="name" style="color:var(--text-secondary)">PDM</td><td class="num">3</td><td class="num atl-val" style="border-left:1px solid var(--border)">2</td><td class="num btl-val">1</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-warn">2</span></td><td class="num" style="color:var(--blue);font-weight:600">60</td><td class="num" style="color:var(--btl)">&mdash;</td></tr>
+<tr><td class="name">Incas</td><td class="name" style="color:var(--text-secondary)">Performance & Scale</td><td class="num">8</td><td class="num atl-val" style="border-left:1px solid var(--border)">6</td><td class="num btl-val">2</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-ok">0</span></td><td class="num" style="color:var(--blue);font-weight:600">61</td><td class="num" style="color:var(--btl)">36</td></tr>
+<tr><td class="name">Dream Builders</td><td class="name" style="color:var(--text-secondary)">Platform / Core Modules</td><td class="num">5</td><td class="num atl-val" style="border-left:1px solid var(--border)">2</td><td class="num btl-val">3</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-ok">0</span></td><td class="num" style="color:var(--blue);font-weight:600">80</td><td class="num" style="color:var(--btl)">57</td></tr>
+<tr><td class="name">Stormtroopers</td><td class="name" style="color:var(--text-secondary)">Platform / Core Modules</td><td class="num">5</td><td class="num atl-val" style="border-left:1px solid var(--border)">2</td><td class="num btl-val">3</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-danger">4</span></td><td class="num" style="color:var(--blue);font-weight:600">&mdash;</td><td class="num" style="color:var(--btl)">65</td></tr>
+<tr><td class="name">SwordRunners</td><td class="name" style="color:var(--text-secondary)">Platform / Core Modules</td><td class="num">2</td><td class="num atl-val" style="border-left:1px solid var(--border)">2</td><td class="num btl-val">0</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-ok">0</span></td><td class="num" style="color:var(--blue);font-weight:600">245</td><td class="num" style="color:var(--btl)">&mdash;</td></tr>
+<tr><td class="name">Vikings</td><td class="name" style="color:var(--text-secondary)">Platform / Core Modules</td><td class="num">7</td><td class="num atl-val" style="border-left:1px solid var(--border)">5</td><td class="num btl-val">2</td><td class="num" style="border-left:1px solid var(--border-strong);border-right:1px solid var(--border-strong);text-align:center;width:110px;min-width:110px"><span class="b-warn">3</span></td><td class="num" style="color:var(--blue);font-weight:600">84</td><td class="num" style="color:var(--btl)">9</td></tr>
+</tbody>
+    </table></div>
+  </div>
+</div>
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
