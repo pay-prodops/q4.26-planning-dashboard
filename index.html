@@ -60,7 +60,7 @@
   <header>
     <div class="header-eyebrow">HealthEdge &middot; PI 26.4 Planning</div>
     <h1>Q4 2026 HRP/PDM Planning &mdash; Readiness Dashboard</h1>
-    <div class="header-meta">Data as of 9/3/2026 6:42 PM &middot; Compared to 9/3/2026 10:40 AM</div>
+    <div class="header-meta">Data as of 9/3/2026 6:42 PM &middot; Compared to 9/3/2026 6:42 PM</div>
   </header>
   <div class="kpi-row">
     <div class="kpi"><div class="kpi-label">Above the Line</div><div class="kpi-value kv-blue">139</div><div class="kpi-sub">67% of 206 epics</div></div>
@@ -70,14 +70,14 @@
   </div>
   <div class="tab-bar">
     <button class="tab active" onclick="switchTab('epic',this)">Epic Fields <span class="count">206 epics</span></button>
-    <button class="tab" onclick="switchTab('hinit',this)">Enterprise Readiness <span class="count">130 HINITs</span></button>
+    <button class="tab" onclick="switchTab('hinit',this)">Enterprise Readiness <span class="count">141 HINITs</span></button>
     <button class="tab" onclick="switchTab('teams',this)">Scrum Teams</button>
   </div>
   <div class="panel active" id="panel-epic">
     <div class="legend">
       <span><span class="b-ok">0</span> None missing</span><span><span class="b-mid">2</span> &lt;30% missing</span>
       <span><span class="b-warn">8</span> 30&ndash;69% missing</span><span><span class="b-danger">14</span> &ge;70% missing</span>
-      <span style="margin-left:4px;color:var(--text-muted)">&middot; &darr;9 improved &middot; &uarr;6 got worse since last run</span>
+      <span style="margin-left:4px;color:var(--text-muted)">&middot; &darr;0 improved &middot; &uarr;0 got worse since last run</span>
     </div>
     <div class="table-wrap"><table>
       <thead>
@@ -136,7 +136,7 @@
 </tr>
 <tr><td class="name">Claims &amp; Configuration</td><td class="num">35</td><td class="num atl-val" style="border-left:1px solid var(--border)">27</td><td class="num btl-val">8</td>
 <td class="num group-divider"><span class="b-ok">0</span></td>
-<td class="num"><span class="b-mid">6</span><span class="delta-bad">&uarr;1</span></td>
+<td class="num"><span class="b-mid">6</span></td>
 <td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-ok">0</span></td>
@@ -144,7 +144,7 @@
 <td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-mid">2</span></td>
 <td class="num"><span class="b-ok">0</span></td>
-<td class="num"><span class="b-mid">3</span><span class="delta-good">&darr;9</span></td>
+<td class="num"><span class="b-mid">3</span></td>
 <td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-ok">0</span></td>
 </tr>
@@ -179,14 +179,14 @@
 <tr><td class="name">Integrations</td><td class="num">24</td><td class="num atl-val" style="border-left:1px solid var(--border)">13</td><td class="num btl-val">11</td>
 <td class="num group-divider"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-ok">0</span></td>
-<td class="num"><span class="b-mid">4</span><span class="delta-bad">&uarr;1</span></td>
-<td class="num"><span class="b-warn">9</span><span class="delta-bad">&uarr;1</span></td>
+<td class="num"><span class="b-mid">4</span></td>
+<td class="num"><span class="b-warn">9</span></td>
 <td class="num"><span class="b-warn">10</span></td>
 <td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-mid">1</span></td>
-<td class="num"><span class="b-danger">17</span><span class="delta-bad">&uarr;1</span></td>
-<td class="num"><span class="b-mid">1</span><span class="delta-bad">&uarr;1</span></td>
-<td class="num"><span class="b-warn">4</span><span class="delta-bad">&uarr;1</span></td>
+<td class="num"><span class="b-danger">17</span></td>
+<td class="num"><span class="b-mid">1</span></td>
+<td class="num"><span class="b-warn">4</span></td>
 <td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-ok">0</span></td>
 </tr>
@@ -283,8 +283,8 @@
     <div class="legend">
       <span><span class="b-ok">0</span> None missing</span><span><span class="b-mid">2</span> &lt;30% missing</span>
       <span><span class="b-warn">8</span> 30&ndash;69% missing</span><span><span class="b-danger">14</span> &ge;70% missing</span>
-      <span style="margin-left:4px;color:var(--text-muted)">&middot; Customer and Teams Involved in yellow &mdash; not always required &nbsp;&middot;&nbsp; No P.I. (26.4) = HINIT's own P.I. field doesn't include 26.4</span>
-      <span style="margin-left:4px;color:var(--text-muted)">&middot; &darr;12 improved &middot; &uarr;6 got worse since last run</span>
+      <span style="margin-left:4px;color:var(--text-muted)">&middot; Customer and Teams Involved in yellow &mdash; not always required &nbsp;&middot;&nbsp; No P.I. (26.4) = HINIT's own P.I. field doesn't include 26.4 &nbsp;&middot;&nbsp; Includes 11 Initiative-only rows (no child epics this quarter) treated as BTL-majority by default</span>
+      <span style="margin-left:4px;color:var(--text-muted)">&middot; &darr;0 improved &middot; &uarr;0 got worse since last run</span>
     </div>
     <div class="table-wrap"><table>
       <thead>
@@ -301,7 +301,7 @@
       </thead>
       <tbody><tr><td class="name">Billing &amp; Financials</td><td class="num">7</td><td class="num atl-val" style="border-left:1px solid var(--border)">6</td><td class="num btl-val">1</td>
 <td class="num group-divider"><span class="b-ok">0</span></td>
-<td class="num"><span class="b-ok">0</span><span class="delta-good">&darr;2</span></td>
+<td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-ok">0</span></td>
@@ -323,29 +323,41 @@
 <td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-ok">0</span></td>
 </tr>
-<tr><td class="name">CVSH</td><td class="num">14</td><td class="num atl-val" style="border-left:1px solid var(--border)">13</td><td class="num btl-val">1</td>
-<td class="num group-divider"><span class="b-ok">0</span></td>
+<tr><td class="name">CVSH</td><td class="num">15</td><td class="num atl-val" style="border-left:1px solid var(--border)">13</td><td class="num btl-val">2</td>
+<td class="num group-divider"><span class="b-mid">1</span></td>
 <td class="num"><span class="b-ok">0</span></td>
-<td class="num"><span class="b-mid">4</span></td>
+<td class="num"><span class="b-warn">5</span></td>
+<td class="num"><span class="b-mid">2</span></td>
+<td class="num"><span class="b-mid">1</span></td>
+<td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-mid">1</span></td>
 <td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-ok">0</span></td>
-<td class="num"><span class="b-ok">0</span></td>
-<td class="num"><span class="b-ok">0</span></td>
-<td class="num"><span class="b-ok">0</span></td>
-<td class="num"><span class="b-mid">1</span></td>
+<td class="num"><span class="b-mid">2</span></td>
 </tr>
 <tr><td class="name">Claims &amp; Configuration</td><td class="num">32</td><td class="num atl-val" style="border-left:1px solid var(--border)">24</td><td class="num btl-val">8</td>
 <td class="num group-divider"><span class="b-ok">0</span></td>
-<td class="num"><span class="b-ok">0</span><span class="delta-good">&darr;2</span></td>
-<td class="num"><span class="b-danger">31</span><span class="delta-bad">&uarr;2</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-danger">31</span></td>
 <td class="num"><span class="b-mid">6</span></td>
 <td class="num"><span class="b-mid">7</span></td>
-<td class="num"><span class="b-warn">17</span><span class="delta-bad">&uarr;2</span></td>
+<td class="num"><span class="b-warn">17</span></td>
 <td class="num"><span class="b-warn">10</span></td>
 <td class="num"><span class="b-ok">0</span></td>
-<td class="num"><span class="b-mid">6</span><span class="delta-bad">&uarr;2</span></td>
+<td class="num"><span class="b-mid">6</span></td>
 <td class="num"><span class="b-warn">12</span></td>
+</tr>
+<tr><td class="name">Core-Web</td><td class="num">10</td><td class="num atl-val" style="border-left:1px solid var(--border)">0</td><td class="num btl-val">10</td>
+<td class="num group-divider"><span class="b-mid">1</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-danger">9</span></td>
+<td class="num"><span class="b-danger">10</span></td>
+<td class="num"><span class="b-danger">10</span></td>
+<td class="num"><span class="b-danger">10</span></td>
+<td class="num"><span class="b-danger">10</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-ok">0</span></td>
+<td class="num"><span class="b-danger">10</span></td>
 </tr>
 <tr><td class="name">Enrollment</td><td class="num">10</td><td class="num atl-val" style="border-left:1px solid var(--border)">8</td><td class="num btl-val">2</td>
 <td class="num group-divider"><span class="b-mid">2</span></td>
@@ -373,7 +385,7 @@
 </tr>
 <tr><td class="name">Integrations</td><td class="num">9</td><td class="num atl-val" style="border-left:1px solid var(--border)">5</td><td class="num btl-val">4</td>
 <td class="num group-divider"><span class="b-mid">2</span></td>
-<td class="num"><span class="b-ok">0</span><span class="delta-good">&darr;1</span></td>
+<td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-danger">8</span></td>
 <td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-ok">0</span></td>
@@ -409,7 +421,7 @@
 </tr>
 <tr><td class="name">PDM</td><td class="num">13</td><td class="num atl-val" style="border-left:1px solid var(--border)">8</td><td class="num btl-val">5</td>
 <td class="num group-divider"><span class="b-mid">2</span></td>
-<td class="num"><span class="b-ok">0</span><span class="delta-good">&darr;7</span></td>
+<td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-danger">13</span></td>
 <td class="num"><span class="b-ok">0</span></td>
 <td class="num"><span class="b-warn">7</span></td>
@@ -456,7 +468,7 @@
 <td class="num"><span class="b-warn">3</span></td>
 </tr>
 </tbody>
-      <tfoot><tr><td class="name-cell">TOTAL</td><td class="num">130</td><td class="num atl-val" style="border-left:1px solid var(--border)">91</td><td class="num btl-val">39</td><td class="num group-divider">9</td><td class="num">0</td><td class="num">92</td><td class="num">14</td><td class="num">18</td><td class="num">35</td><td class="num">25</td><td class="num">0</td><td class="num">16</td><td class="num">26</td></tr></tfoot>
+      <tfoot><tr><td class="name-cell">TOTAL</td><td class="num">141</td><td class="num atl-val" style="border-left:1px solid var(--border)">91</td><td class="num btl-val">50</td><td class="num group-divider">11</td><td class="num">0</td><td class="num">102</td><td class="num">25</td><td class="num">29</td><td class="num">45</td><td class="num">36</td><td class="num">0</td><td class="num">16</td><td class="num">37</td></tr></tfoot>
 
     </table></div>
   </div>
