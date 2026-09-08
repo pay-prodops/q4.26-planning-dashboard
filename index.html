@@ -54,8 +54,8 @@
   .delta-good{font-size:10px;font-weight:600;color:#15803d;margin-left:4px}
   .delta-bad{font-size:10px;font-weight:600;color:#dc2626;margin-left:4px}
   .badge-wrap{position:relative;display:inline-block;outline:none}
-  .badge-wrap:hover .badge-tip,.badge-wrap:focus .badge-tip,.badge-wrap:focus-within .badge-tip{display:block}
-  .badge-tip{display:none;position:absolute;top:100%;left:0;z-index:50;background:#1f2430;color:#e5e7eb;border-radius:6px;padding:8px 10px;font-size:11px;line-height:1.7;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.28);margin-top:4px;text-align:left}
+  .badge-wrap:hover .badge-tip,.badge-wrap:focus .badge-tip,.badge-wrap:focus-within .badge-tip,.badge-wrap.pinned .badge-tip{display:block}
+  .badge-tip{display:none;position:absolute;top:100%;left:0;z-index:50;background:#1f2430;color:#e5e7eb;border-radius:6px;padding:12px 10px 8px;font-size:11px;line-height:1.7;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.28);margin-top:-4px;text-align:left}
   .badge-tip a{color:#93c5fd;text-decoration:none;display:block;font-family:var(--mono)}
   .badge-tip a:hover{text-decoration:underline}
   .badge-tip .more{color:#9aa3b2;font-style:italic;margin-top:2px}
@@ -548,6 +548,17 @@ function switchTab(id,btn){
   document.getElementById('panel-'+id).classList.add('active');
   btn.classList.add('active');
 }
+document.querySelectorAll('.badge-wrap').forEach(w=>{
+  w.addEventListener('click',e=>{
+    e.stopPropagation();
+    const wasPinned=w.classList.contains('pinned');
+    document.querySelectorAll('.badge-wrap.pinned').forEach(o=>o.classList.remove('pinned'));
+    if(!wasPinned) w.classList.add('pinned');
+  });
+});
+document.addEventListener('click',()=>{
+  document.querySelectorAll('.badge-wrap.pinned').forEach(w=>w.classList.remove('pinned'));
+});
 </script>
 </body>
 </html>
